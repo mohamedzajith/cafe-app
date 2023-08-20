@@ -9,7 +9,7 @@ import Button from "../../components/core/Button";
 import EmployeeTable from "../../components/tables/employeeTable";
 import { fetchEmployees } from "../../store/actions/employeeAction";
 import { makeEmployeesList } from "../../store/selector/employeeSelector";
-import {useNavigate, useSearchParams} from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import AdminLayout from "../../components/layouts/AdminLayout";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
@@ -37,7 +37,10 @@ const EmployeeHOC = (props) => {
           <Typography component={"h1"} variant="h3" gutterBottom>
             Employees List
           </Typography>
-          <Button title={"Create Employee"} onClick={() => navigate("/employee/create")}/>
+          <Button
+            title={"Create Employee"}
+            onClick={() => navigate("/employee/create")}
+          />
         </Stack>
         <EmployeeTable employees={employeesList} />
       </Box>
@@ -57,7 +60,4 @@ export const mapDispatchToProps = (dispatch) => {
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
-export default compose(
-  withConnect,
-  memo,
-)(EmployeeHOC);
+export default compose(withConnect, memo)(EmployeeHOC);

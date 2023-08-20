@@ -3,25 +3,22 @@ import { Box, Stack } from "@mui/system";
 import { createStructuredSelector } from "reselect";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { memo, useEffect } from "react";
+import { memo } from "react";
 import { reduxForm } from "redux-form";
 import { forms } from "../../utils/constants";
 import Typography from "@mui/material/Typography";
-import Button from "../../components/core/Button";
-import EmployeeTable from "../../components/tables/employeeTable";
 import { fetchEmployees } from "../../store/actions/employeeAction";
 import { makeEmployeesList } from "../../store/selector/employeeSelector";
-import { useSearchParams } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import AdminLayout from "../../components/layouts/AdminLayout";
+import EmployeeForm from "../../components/forms/EmployeeForm";
 
 const EmployeeCreateHOC = (props) => {
-  const { fetchEmployees, employeesList } = props;
-  let [searchParams, setSearchParams] = useSearchParams();
-  const query = Object.fromEntries([...searchParams]);
+  const navigate = useNavigate();
+  const goBack = () => {
+    navigate("/employees")
+  }
 
-  useEffect(() => {
-    fetchEmployees(query);
-  }, [query, fetchEmployees]);
   return (
     <AdminLayout>
       <Box>
@@ -33,11 +30,10 @@ const EmployeeCreateHOC = (props) => {
           sx={{ py: 2 }}
         >
           <Typography component={"h1"} variant="h3" gutterBottom>
-            Employees List
+            Create New Employees
           </Typography>
-          <Button title={"Create Employee"} />
         </Stack>
-        <EmployeeTable employees={employeesList} />
+        <EmployeeForm clickCancel={() => goBack()} />
       </Box>
     </AdminLayout>
   );
