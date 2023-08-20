@@ -4,20 +4,18 @@ import { createStructuredSelector } from "reselect";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { memo, useEffect } from "react";
+import { reduxForm } from "redux-form";
+import { forms } from "../../utils/constants";
 import Typography from "@mui/material/Typography";
 import Button from "../../components/core/Button";
 import EmployeeTable from "../../components/tables/employeeTable";
 import { fetchEmployees } from "../../store/actions/employeeAction";
 import { makeEmployeesList } from "../../store/selector/employeeSelector";
-import {useNavigate, useSearchParams} from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import AdminLayout from "../../components/layouts/AdminLayout";
-import withReactContent from "sweetalert2-react-content";
-import Swal from "sweetalert2";
 
-const EmployeeHOC = (props) => {
+const EmployeeCreateHOC = (props) => {
   const { fetchEmployees, employeesList } = props;
-  const MySwal = withReactContent(Swal);
-  const navigate = useNavigate();
   let [searchParams, setSearchParams] = useSearchParams();
   const query = Object.fromEntries([...searchParams]);
 
@@ -37,7 +35,7 @@ const EmployeeHOC = (props) => {
           <Typography component={"h1"} variant="h3" gutterBottom>
             Employees List
           </Typography>
-          <Button title={"Create Employee"} onClick={() => navigate("/employee/create")}/>
+          <Button title={"Create Employee"} />
         </Stack>
         <EmployeeTable employees={employeesList} />
       </Box>
@@ -59,5 +57,9 @@ const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
 export default compose(
   withConnect,
+  reduxForm({
+    form: forms.EMPLOYEE_FORM,
+    destroyOnUnmount: false,
+  }),
   memo,
-)(EmployeeHOC);
+)(EmployeeCreateHOC);

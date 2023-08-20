@@ -98,7 +98,7 @@ function TablePaginationActions(props) {
   );
 }
 
-const CafeTable = ({ cafes, path }) => {
+const CafeTable = ({ cafes, path, cafeDelete }) => {
   const navigate = useNavigate();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -115,8 +115,10 @@ const CafeTable = ({ cafes, path }) => {
     setPage(0);
   };
   const redirectTo = (name) => {
-    console.log(name, "==========");
     navigate(`${path}?cafe=${name}`);
+  };
+  const deleteCafe = (cafe) => {
+    cafeDelete && cafeDelete(cafe);
   };
 
   return (
@@ -163,7 +165,11 @@ const CafeTable = ({ cafes, path }) => {
                   alignItems="center"
                   spacing={{ xs: 1 }}
                 >
-                  <Button title={"delete"} color={"error"} />
+                  <Button
+                    onClick={() => deleteCafe(cafe)}
+                    title={"delete"}
+                    color={"error"}
+                  />
                   <Button title={"edit"} color={"success"} />
                 </Stack>
               </StyledTableCell>

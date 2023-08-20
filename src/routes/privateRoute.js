@@ -1,21 +1,25 @@
-import { Navigate } from "react-router-dom";
 import React from "react";
-import AccountLayout from "../components/layouts/AdminLayout";
-import CafeContainer from "../containers/Cafe";
+import CafeContainer from "../containers/Cafe/index";
+import CafeCreateContainer from "../containers/Cafe/create";
 import EmployeeContainer from "../containers/Employee";
+import EmployeeCreateContainer from "../containers/Employee/create";
 
 export const PrivateRoutes = [
   {
-    path: "/",
-    element: <AccountLayout />,
-    children: [{ path: "*", element: <Navigate to="/404" /> }],
+    path: "/cafes",
+    element: <CafeContainer />,
   },
   {
-    path: "/admin",
-    element: <AccountLayout />,
-    children: [
-      { path: "/admin/cafes", element: <CafeContainer /> },
-      { path: "/admin/employees", element: <EmployeeContainer /> },
-    ],
+    path: "/cafe/create",
+    element: <CafeCreateContainer />,
   },
+  {
+    path: "/employees",
+    element: <EmployeeContainer />,
+  },
+  {
+    path: "/employee/create",
+    element: <EmployeeCreateContainer />,
+  },
+  { path: "*", element: <CafeCreateContainer /> },
 ];
