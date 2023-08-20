@@ -7,26 +7,32 @@ import { memo, useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import Button from "../../components/core/Button";
 import EmployeeTable from "../../components/tables/employeeTable";
-import {deleteEmployee, fetchEmployees} from "../../store/actions/employeeAction";
+import {
+  deleteEmployee,
+  fetchEmployees,
+} from "../../store/actions/employeeAction";
 import { makeEmployeesList } from "../../store/selector/employeeSelector";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import AdminLayout from "../../components/layouts/AdminLayout";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
-import {get, isEmpty} from "lodash"
+import { get, isEmpty } from "lodash";
 
 const EmployeeHOC = (props) => {
   const { fetchEmployees, employeesList, deleteEmployee } = props;
   const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
-  let [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const query = Object.fromEntries([...searchParams]);
-  const isAction = get(query, "name") || get(query, "cafe")
+  const isAction = get(query, "name") || get(query, "cafe");
 
   useEffect(() => {
     fetchEmployees(query);
   }, []);
 
+  const redirectTo = (employeeInfo) => {
+    navigate(`/employee/${employeeInfo.id}`);
+  };
   const isEmployeeDelete = (employeeInfo) => {
     MySwal.fire({
       title: `Are you sure delete ${employeeInfo.name} ?`,
@@ -38,12 +44,11 @@ const EmployeeHOC = (props) => {
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const res = await deleteEmployee(employeeInfo.id)
+        const res = await deleteEmployee(employeeInfo.id);
         if (res.status === 200) {
           Swal.fire("Deleted!", "Your cafe has been deleted.", "success");
           navigate(0);
         }
-
       }
     });
   };
@@ -61,12 +66,19 @@ const EmployeeHOC = (props) => {
           <Typography component={"h1"} variant="h3" gutterBottom>
             Employees List
           </Typography>
-           { isEmpty(isAction) &&<Button
-            title={"Create Employee"}
-            onClick={() => navigate("/employee/create")}
-          />}
+          {isEmpty(isAction) && (
+            <Button
+              title={"Create Employee"}
+              onClick={() => navigate("/employee/create")}
+            />
+          )}
         </Stack>
-        <EmployeeTable employees={employeesList} employeeDelete={isEmployeeDelete} actionView={isEmpty(isAction)}/>
+        <EmployeeTable
+          employees={employeesList}
+          employeeDelete={isEmployeeDelete}
+          employeeEdit={redirectTo}
+          actionView={isEmpty(isAction)}
+        />
       </Box>
     </AdminLayout>
   );

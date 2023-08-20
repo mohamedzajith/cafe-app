@@ -18,6 +18,8 @@ import {
   MoreVert as MoreIcon,
 } from "@mui/icons-material";
 import Container from "../core/Container";
+import {Link} from "@mui/material";
+import {Stack} from "@mui/system";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -177,9 +179,9 @@ const Header = () => {
               component="div"
               sx={{ display: { xs: "none", sm: "block" } }}
             >
-              MUI
+              CAFÉ
             </Typography>
-            <Search>
+            {/*<Search>
               <SearchIconWrapper>
                 <SearchIcon />
               </SearchIconWrapper>
@@ -187,9 +189,23 @@ const Header = () => {
                 placeholder="Search…"
                 inputProps={{ "aria-label": "search" }}
               />
-            </Search>
+            </Search>*/}
+            <Stack
+              direction={{ xs: "row", sm: "row" }}
+              justifyContent={{ xs: "space-between", sm: "space-between" }}
+              alignItems="center"
+              spacing={{ xs: 1, sm: 2 }}
+              sx={{ py: 2, ml:2 }}
+            >
+              <Link color={"white"} href={"/employees"} underline="hover">
+                Employees
+              </Link>
+              <Link color={"white"} href={"/cafes"} underline="hover">
+                Cafes
+              </Link>
+            </Stack>
             <Box sx={{ flexGrow: 1 }} />
-            <Box sx={{ display: { xs: "none", md: "flex" } }}>
+            {/*<Box sx={{ display: { xs: "none", md: "flex" } }}>
               <IconButton
                 size="large"
                 aria-label="show 4 new mails"
@@ -231,12 +247,12 @@ const Header = () => {
               >
                 <MoreIcon />
               </IconButton>
-            </Box>
+            </Box>*/}
           </Toolbar>
         </Container>
       </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
+      {/*{renderMobileMenu}*/}
+      {/*{renderMenu}*/}
     </Box>
   );
 };

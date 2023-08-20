@@ -97,7 +97,12 @@ function TablePaginationActions(props) {
   );
 }
 
-const EmployeeTable = ({ employees, employeeDelete, actionView = true }) => {
+const EmployeeTable = ({
+  employees,
+  employeeDelete,
+  employeeEdit,
+  actionView = true,
+}) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -117,6 +122,10 @@ const EmployeeTable = ({ employees, employeeDelete, actionView = true }) => {
     employeeDelete && employeeDelete(employee);
   };
 
+  const editEmployee = (employee) => {
+    employeeEdit && employeeEdit(employee);
+  };
+
   return (
     <TableContainer component={Paper}>
       <Table aria-label="customized table">
@@ -130,7 +139,9 @@ const EmployeeTable = ({ employees, employeeDelete, actionView = true }) => {
               Days worked in the cafe
             </StyledTableCell>
             <StyledTableCell align="left">Cafe name</StyledTableCell>
-            {actionView && <StyledTableCell align="center">Actions</StyledTableCell>}
+            {actionView && (
+              <StyledTableCell align="center">Actions</StyledTableCell>
+            )}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -156,17 +167,27 @@ const EmployeeTable = ({ employees, employeeDelete, actionView = true }) => {
                 {employee.days_worked}
               </StyledTableCell>
               <StyledTableCell align="center">{employee.cafe}</StyledTableCell>
-              {actionView && <StyledTableCell align="center">
-                <Stack
-                  direction={{xs: "row"}}
-                  // justifyContent={{ xs: "space-between", sm: "space-between" }}
-                  alignItems="center"
-                  spacing={{xs: 1}}
-                >
-                  <Button title={"delete"} color={"error"} onClick={() => deleteEmployee(employee)}/>
-                  <Button title={"edit"} color={"success"}/>
-                </Stack>
-              </StyledTableCell>}
+              {actionView && (
+                <StyledTableCell align="center">
+                  <Stack
+                    direction={{ xs: "row" }}
+                    // justifyContent={{ xs: "space-between", sm: "space-between" }}
+                    alignItems="center"
+                    spacing={{ xs: 1 }}
+                  >
+                    <Button
+                      title={"delete"}
+                      color={"error"}
+                      onClick={() => deleteEmployee(employee)}
+                    />
+                    <Button
+                      title={"edit"}
+                      color={"success"}
+                      onClick={() => editEmployee(employee)}
+                    />
+                  </Stack>
+                </StyledTableCell>
+              )}
             </StyledTableRow>
           ))}
           {emptyRows > 0 && (

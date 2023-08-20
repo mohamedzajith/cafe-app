@@ -8,16 +8,20 @@ import { reduxForm, reset } from "redux-form";
 import { forms } from "../../utils/constants";
 import Typography from "@mui/material/Typography";
 import {
+  fetchEmployeeInfo,
   fetchEmployees,
+  getEmployee,
   submitEmployee,
+  updateEmployee,
 } from "../../store/actions/employeeAction";
 import {
   makeEmployeeCreateInitialValues,
+  makeEmployeeInfo,
   makeEmployeeInitialValues,
   makeEmployeePayload,
   makeEmployeesList,
 } from "../../store/selector/employeeSelector";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import AdminLayout from "../../components/layouts/AdminLayout";
 import EmployeeForm from "../../components/forms/EmployeeForm";
 import {
@@ -27,32 +31,41 @@ import {
 import { fetchCafes } from "../../store/actions/cafeAction";
 import { initializeForm } from "../../store/actions";
 
-const EmployeeCreateHOC = (props) => {
+const EmployeeEditHOC = (props) => {
   const {
-    cafesOptions,
     fetchCafes,
-    createEmployee,
+    updateEmployee,
     payload,
-    resetForm,
-    initializeForm,
+    fetchEmployeeInfo,
     initialValues,
+    cafesOptions,
+    initializeForm,
+    employeeInfo,
+    resetForm,
   } = props;
   const navigate = useNavigate();
+  const { id } = useParams();
+
   const goBack = () => {
     navigate("/employees");
   };
+
   const create = async () => {
-    const res = await createEmployee(payload);
+    const res = await updateEmployee(id, payload);
     if (res.status === 200) {
+      resetForm();
       goBack();
     }
   };
 
   useEffect(() => {
     fetchCafes();
-    resetForm();
-    initializeForm(initialValues);
+    fetchEmployeeInfo(id);
   }, []);
+
+  useEffect(() => {
+    initializeForm(initialValues);
+  }, [employeeInfo?.id, id]);
 
   return (
     <AdminLayout>
@@ -65,7 +78,7 @@ const EmployeeCreateHOC = (props) => {
           sx={{ py: 2 }}
         >
           <Typography component={"h1"} variant="h3" gutterBottom>
-            Create New Employees
+            Edit employee details
           </Typography>
         </Stack>
         <EmployeeForm
@@ -79,18 +92,16 @@ const EmployeeCreateHOC = (props) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-  employeesList: makeEmployeesList(),
   cafesOptions: makeCafesOptions(),
   payload: makeEmployeePayload(),
-  initialValues: makeEmployeeCreateInitialValues(),
+  initialValues: makeEmployeeInitialValues(),
+  employeeInfo: makeEmployeeInfo(),
 });
 
 export const mapDispatchToProps = (dispatch) => {
   return {
-    fetchEmployees: (query) => dispatch(fetchEmployees(query)),
     fetchCafes: (query) => dispatch(fetchCafes(query)),
-    createEmployee: (payload) => dispatch(submitEmployee(payload)),
-    resetForm: () => dispatch(reset(forms.EMPLOYEE_FORM)),
+    fetchEmployeeInfo: (id) => dispatch(fetchEmployeeInfo(id)),
     initializeForm: (initialValues) =>
       dispatch(
         initializeForm({
@@ -98,6 +109,8 @@ export const mapDispatchToProps = (dispatch) => {
           data: initialValues,
         }),
       ),
+    updateEmployee: (id, payload) => dispatch(updateEmployee(id, payload)),
+    resetForm: () => dispatch(reset(forms.EMPLOYEE_FORM)),
   };
 };
 
@@ -110,4 +123,4 @@ export default compose(
     destroyOnUnmount: false,
   }),
   memo,
-)(EmployeeCreateHOC);
+)(EmployeeEditHOC);

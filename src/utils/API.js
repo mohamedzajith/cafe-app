@@ -20,16 +20,16 @@ cafeServiceApi.interceptors.request.use(
 );
 
 cafeServiceApi.interceptors.response.use(
-  response => {
+  (response) => {
     // You can modify the response data here
-    console.log('Response Interceptor:', response);
+    console.log("Response Interceptor:", response);
     return response;
   },
-  error => {
+  (error) => {
     // Handle any response errors here
-    console.error('Response Error Interceptor:', error);
+    console.error("Response Error Interceptor:", error);
     return Promise.reject(error);
-  }
+  },
 );
 export const API = {
   cafeServiceApi,

@@ -6,6 +6,7 @@ import TextField from "../formFields/TextFeild";
 import { Stack } from "@mui/system";
 import RadioGroup from "../formFields/RadioGroup";
 import SelectInput from "../formFields/SelectInput";
+import { connect } from "react-redux";
 
 const EmployeeForm = (props) => {
   const {
@@ -19,7 +20,7 @@ const EmployeeForm = (props) => {
   } = props;
 
   const onSubmit = (formData) => {
-    onFormSubmit && onFormSubmit()
+    onFormSubmit && onFormSubmit();
   };
   const redirectTo = () => {
     reset();
@@ -78,7 +79,7 @@ const EmployeeForm = (props) => {
           variant="contained"
           color="primary"
           onClick={() => redirectTo()}
-          disabled={pristine || submitting}
+          disabled={submitting}
         >
           Cancel
         </Button>

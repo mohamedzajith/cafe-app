@@ -50,7 +50,6 @@ const TextField = ({
       label={label}
       placeholder={placeholder}
       component={renderTextField}
-      validate={[required, maxLength(15)]}
     />
   );
 };
