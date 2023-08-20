@@ -23,7 +23,7 @@ const CafeHOC = (props) => {
 
   useEffect(() => {
     fetchCafes(query);
-  }, [fetchCafes, query]);
+  }, []);
 
   const isCafeDelete = (cafeInfo) => {
     MySwal.fire({

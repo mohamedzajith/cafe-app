@@ -17,6 +17,8 @@ export const forms = {
 // ********************** CAFE SERVICE API **********************
 export const FETCH_CAFES = "/cafes";
 export const FETCH_EMPLOYEE = "/employees";
+export const SUBMIT_EMPLOYEE = "/employee";
+export const DELETE_EMPLOYEE = "/employee/{id}";
 export const USER_ACTIVITIES = "/user/activity";
 export const GET_USER_ACTIVITY = "/user/activity/{id}";
 export const SUBMIT_USER_ACTIVITY = "/user/activity/{id}";

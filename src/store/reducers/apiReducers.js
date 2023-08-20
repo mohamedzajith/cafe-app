@@ -37,6 +37,7 @@ const apiReducer = handleActions(
       (draftState, { payload: { key, error, errorReason } }) => {
         set(draftState, `${key}.loading`, false);
         set(draftState, `${key}.completedAt`, new Date());
+        set(draftState, `${key}.data`, undefined);
         set(draftState, `${key}.error`, error);
         set(draftState, `${key}.errorReason`, errorReason);
       },

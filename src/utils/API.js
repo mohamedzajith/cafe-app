@@ -18,6 +18,19 @@ cafeServiceApi.interceptors.request.use(
     return new Promise.reject(error);
   },
 );
+
+cafeServiceApi.interceptors.response.use(
+  response => {
+    // You can modify the response data here
+    console.log('Response Interceptor:', response);
+    return response;
+  },
+  error => {
+    // Handle any response errors here
+    console.error('Response Error Interceptor:', error);
+    return Promise.reject(error);
+  }
+);
 export const API = {
   cafeServiceApi,
 };

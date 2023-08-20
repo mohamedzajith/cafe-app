@@ -97,7 +97,7 @@ function TablePaginationActions(props) {
   );
 }
 
-const EmployeeTable = ({ employees }) => {
+const EmployeeTable = ({ employees, employeeDelete, actionView = true }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -113,6 +113,10 @@ const EmployeeTable = ({ employees }) => {
     setPage(0);
   };
 
+  const deleteEmployee = (employee) => {
+    employeeDelete && employeeDelete(employee);
+  };
+
   return (
     <TableContainer component={Paper}>
       <Table aria-label="customized table">
@@ -126,7 +130,7 @@ const EmployeeTable = ({ employees }) => {
               Days worked in the cafe
             </StyledTableCell>
             <StyledTableCell align="left">Cafe name</StyledTableCell>
-            <StyledTableCell align="center">Actions</StyledTableCell>
+            {actionView && <StyledTableCell align="center">Actions</StyledTableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -152,17 +156,17 @@ const EmployeeTable = ({ employees }) => {
                 {employee.days_worked}
               </StyledTableCell>
               <StyledTableCell align="center">{employee.cafe}</StyledTableCell>
-              <StyledTableCell align="center">
+              {actionView && <StyledTableCell align="center">
                 <Stack
-                  direction={{ xs: "row" }}
+                  direction={{xs: "row"}}
                   // justifyContent={{ xs: "space-between", sm: "space-between" }}
                   alignItems="center"
-                  spacing={{ xs: 1 }}
+                  spacing={{xs: 1}}
                 >
-                  <Button title={"delete"} color={"error"} />
-                  <Button title={"edit"} color={"success"} />
+                  <Button title={"delete"} color={"error"} onClick={() => deleteEmployee(employee)}/>
+                  <Button title={"edit"} color={"success"}/>
                 </Stack>
-              </StyledTableCell>
+              </StyledTableCell>}
             </StyledTableRow>
           ))}
           {emptyRows > 0 && (
@@ -175,7 +179,7 @@ const EmployeeTable = ({ employees }) => {
           <TableRow>
             <TablePagination
               rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-              colSpan={7}
+              colSpan={actionView ? 7 : 6}
               count={employees.length}
               rowsPerPage={rowsPerPage}
               page={page}

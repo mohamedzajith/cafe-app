@@ -9,14 +9,14 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { memo } from "react";
 import CafeForm from "../../components/forms/CafeForm";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const CafeCreateHOC = (props) => {
   const navigate = useNavigate();
 
   const goBack = () => {
-    navigate("/cafes")
-  }
+    navigate("/cafes");
+  };
 
   return (
     <AdminLayout>
@@ -33,7 +33,7 @@ const CafeCreateHOC = (props) => {
           </Typography>
         </Stack>
       </Box>
-      <CafeForm clickCancel={() => goBack()}/>
+      <CafeForm clickCancel={() => goBack()} />
     </AdminLayout>
   );
 };

@@ -1,6 +1,11 @@
 import React from "react";
 import { Field } from "redux-form";
-import { Box, TextField as CustomTextField } from "@mui/material";
+import { Box, FormLabel, TextField as CustomTextField } from "@mui/material";
+
+const required = (value) => (value ? undefined : "Required");
+const maxLength = (max) => (value) =>
+  value && value.length > max ? `Must be ${max} characters or less` : undefined;
+const maxLength15 = maxLength(15);
 
 const renderTextField = ({
   input,
@@ -9,9 +14,9 @@ const renderTextField = ({
   ...custom
 }) => (
   <Box sx={{ py: 1 }}>
+    <FormLabel id={custom.name}>{label}</FormLabel>
     <CustomTextField
       variant="outlined"
-      label={label}
       fullWidth={true}
       hintText={label}
       floatingLabelText={label}
@@ -45,6 +50,7 @@ const TextField = ({
       label={label}
       placeholder={placeholder}
       component={renderTextField}
+      validate={[required, maxLength(15)]}
     />
   );
 };

@@ -3,21 +3,43 @@ import { Box, Stack } from "@mui/system";
 import { createStructuredSelector } from "reselect";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import { reduxForm } from "redux-form";
 import { forms } from "../../utils/constants";
 import Typography from "@mui/material/Typography";
-import { fetchEmployees } from "../../store/actions/employeeAction";
-import { makeEmployeesList } from "../../store/selector/employeeSelector";
-import {useNavigate} from "react-router-dom";
+import {
+  fetchEmployees,
+  submitEmployee,
+} from "../../store/actions/employeeAction";
+import {
+  makeEmployeePayload,
+  makeEmployeesList,
+} from "../../store/selector/employeeSelector";
+import { useNavigate } from "react-router-dom";
 import AdminLayout from "../../components/layouts/AdminLayout";
 import EmployeeForm from "../../components/forms/EmployeeForm";
+import {
+  makeCafesList,
+  makeCafesOptions,
+} from "../../store/selector/cafeSelector";
+import { fetchCafes } from "../../store/actions/cafeAction";
 
 const EmployeeCreateHOC = (props) => {
+  const { cafesOptions, fetchCafes, createEmployee, payload } = props;
   const navigate = useNavigate();
   const goBack = () => {
-    navigate("/employees")
-  }
+    navigate("/employees");
+  };
+  const create = async () => {
+    const res = await createEmployee(payload);
+    if (res.status === 200 ){
+      goBack()
+    }
+  };
+
+  useEffect(() => {
+    fetchCafes();
+  }, []);
 
   return (
     <AdminLayout>
@@ -33,7 +55,11 @@ const EmployeeCreateHOC = (props) => {
             Create New Employees
           </Typography>
         </Stack>
-        <EmployeeForm clickCancel={() => goBack()} />
+        <EmployeeForm
+          clickCancel={() => goBack()}
+          cafesOptions={cafesOptions}
+          onFormSubmit={() => create()}
+        />
       </Box>
     </AdminLayout>
   );
@@ -41,11 +67,15 @@ const EmployeeCreateHOC = (props) => {
 
 const mapStateToProps = createStructuredSelector({
   employeesList: makeEmployeesList(),
+  cafesOptions: makeCafesOptions(),
+  payload: makeEmployeePayload(),
 });
 
 export const mapDispatchToProps = (dispatch) => {
   return {
     fetchEmployees: (query) => dispatch(fetchEmployees(query)),
+    fetchCafes: (query) => dispatch(fetchCafes(query)),
+    createEmployee: (payload) => dispatch(submitEmployee(payload)),
   };
 };
 
