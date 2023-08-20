@@ -16,18 +16,13 @@ export const forms = {
 };
 // ********************** CAFE SERVICE API **********************
 export const FETCH_CAFES = "/cafes";
+export const SUBMIT_CAFE = "/cafe";
+export const DELETE_CAFE = "/cafe/{id}";
+export const FETCH_CAFE = "/cafe/{id}";
+export const UPDATE_CAFE = "/cafe/{id}";
+
 export const FETCH_EMPLOYEES = "/employees";
 export const SUBMIT_EMPLOYEE = "/employee";
 export const DELETE_EMPLOYEE = "/employee/{id}";
 export const FETCH_EMPLOYEE = "/employee/{id}";
 export const UPDATE_EMPLOYEE = "/employee/{id}";
-export const USER_ACTIVITIES = "/user/activity";
-export const GET_USER_ACTIVITY = "/user/activity/{id}";
-export const SUBMIT_USER_ACTIVITY = "/user/activity/{id}";
-
-// ********************** EXAMS SERVICE - ACTIVITY API **********************
-export const GET_ACTIVITIES = "/activity";
-export const GET_ACTIVITY = "/activity/{id}";
-
-// ********************** USER SERVICE API **********************
-export const USER_LOGIN = "/auth/login";

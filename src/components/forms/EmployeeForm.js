@@ -11,7 +11,6 @@ import { connect } from "react-redux";
 const EmployeeForm = (props) => {
   const {
     handleSubmit,
-    pristine,
     reset,
     submitting,
     clickCancel,

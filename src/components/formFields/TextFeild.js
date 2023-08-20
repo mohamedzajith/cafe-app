@@ -11,21 +11,31 @@ const renderTextField = ({
   input,
   label,
   meta: { touched, error },
+  multiline,
+  rows,
+  defaultValue,
+  type,
   ...custom
-}) => (
-  <Box sx={{ py: 1 }}>
-    <FormLabel id={custom.name}>{label}</FormLabel>
-    <CustomTextField
-      variant="outlined"
-      fullWidth={true}
-      hintText={label}
-      floatingLabelText={label}
-      errorText={touched && error}
-      {...input}
-      {...custom}
-    />
-  </Box>
-);
+}) => {
+  return (
+    <Box sx={{ py: 1 }}>
+      <FormLabel id={custom.name}>{label}</FormLabel>
+      <CustomTextField
+        variant="outlined"
+        fullWidth={true}
+        hintText={label}
+        floatingLabelText={label}
+        errorText={touched && error}
+        type={type}
+        multiline={multiline}
+        rows={rows}
+        defaultValue={defaultValue}
+        {...input}
+        {...custom}
+      />
+    </Box>
+  );
+};
 
 const TextField = ({
   field,
@@ -36,6 +46,9 @@ const TextField = ({
   onChange,
   onEnter,
   onBlur,
+  multiline = false,
+  rows = 1,
+  defaultValue = "",
 }) => {
   if (!field) {
     return null;
@@ -50,6 +63,9 @@ const TextField = ({
       label={label}
       placeholder={placeholder}
       component={renderTextField}
+      multiline={multiline}
+      rows={rows}
+      defaultValue={defaultValue}
     />
   );
 };

@@ -7,15 +7,10 @@ import { memo, useEffect } from "react";
 import { reduxForm, reset } from "redux-form";
 import { forms } from "../../utils/constants";
 import Typography from "@mui/material/Typography";
-import {
-  fetchEmployees,
-  submitEmployee,
-} from "../../store/actions/employeeAction";
+import { submitEmployee } from "../../store/actions/employeeAction";
 import {
   makeEmployeeCreateInitialValues,
-  makeEmployeeInitialValues,
   makeEmployeePayload,
-  makeEmployeesList,
 } from "../../store/selector/employeeSelector";
 import { useNavigate } from "react-router-dom";
 import AdminLayout from "../../components/layouts/AdminLayout";
@@ -79,7 +74,6 @@ const EmployeeCreateHOC = (props) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-  employeesList: makeEmployeesList(),
   cafesOptions: makeCafesOptions(),
   payload: makeEmployeePayload(),
   initialValues: makeEmployeeCreateInitialValues(),
@@ -87,7 +81,6 @@ const mapStateToProps = createStructuredSelector({
 
 export const mapDispatchToProps = (dispatch) => {
   return {
-    fetchEmployees: (query) => dispatch(fetchEmployees(query)),
     fetchCafes: (query) => dispatch(fetchCafes(query)),
     createEmployee: (payload) => dispatch(submitEmployee(payload)),
     resetForm: () => dispatch(reset(forms.EMPLOYEE_FORM)),

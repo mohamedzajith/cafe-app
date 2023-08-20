@@ -18,8 +18,8 @@ import {
   MoreVert as MoreIcon,
 } from "@mui/icons-material";
 import Container from "../core/Container";
-import {Link} from "@mui/material";
-import {Stack} from "@mui/system";
+import { Link } from "@mui/material";
+import { Stack } from "@mui/system";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -195,7 +195,7 @@ const Header = () => {
               justifyContent={{ xs: "space-between", sm: "space-between" }}
               alignItems="center"
               spacing={{ xs: 1, sm: 2 }}
-              sx={{ py: 2, ml:2 }}
+              sx={{ py: 2, ml: 2 }}
             >
               <Link color={"white"} href={"/employees"} underline="hover">
                 Employees

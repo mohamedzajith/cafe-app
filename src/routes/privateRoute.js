@@ -15,6 +15,10 @@ export const PrivateRoutes = [
     element: <CafeCreateContainer />,
   },
   {
+    path: "/cafe/id",
+    element: <CafeCreateContainer />,
+  },
+  {
     path: "/employees",
     element: <EmployeeContainer />,
   },

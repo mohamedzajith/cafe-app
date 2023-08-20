@@ -7,15 +7,16 @@ import { memo, useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { fetchCafes } from "../../store/actions/cafeAction";
+import {deleteCafe, fetchCafes} from "../../store/actions/cafeAction";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { makeCafesList } from "../../store/selector/cafeSelector";
 import CafeTable from "../../components/tables/cafeTable";
 import Button from "../../components/core/Button";
 import AdminLayout from "../../components/layouts/AdminLayout";
+import {deleteEmployee} from "../../store/actions/employeeAction";
 
 const CafeHOC = (props) => {
-  const { fetchCafes, cafesList } = props;
+  const { fetchCafes, cafesList, deleteCafe } = props;
   const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
   let [searchParams, setSearchParams] = useSearchParams();
@@ -34,11 +35,12 @@ const CafeHOC = (props) => {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
+    }).then(async (result) => {
+      const res = await deleteCafe(cafeInfo.id);
+      if (res.status === 200) {
         Swal.fire("Deleted!", "Your cafe has been deleted.", "success");
+        navigate(0);
       }
-      navigate(0);
     });
   };
 
@@ -77,6 +79,7 @@ const mapStateToProps = createStructuredSelector({
 export const mapDispatchToProps = (dispatch) => {
   return {
     fetchCafes: (query) => dispatch(fetchCafes(query)),
+    deleteCafe: (id) => dispatch(deleteCafe(id)),
   };
 };
 

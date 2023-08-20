@@ -85,29 +85,12 @@ export const fetchEmployeeInfo = (id) => {
 export const submitEmployee = (payload) => {
   return async (dispatch) => {
     try {
-      const res = await API.cafeServiceApi({
+      return await API.cafeServiceApi({
         method: "POST",
         url: SUBMIT_EMPLOYEE,
         data: payload,
       });
-      if (res) {
-        dispatch(
-          fetchSucceeded({
-            key: "submitEmployee",
-            data: res.data.result,
-            override: true,
-          }),
-        );
-      }
-      return res;
     } catch (error) {
-      dispatch(
-        fetchFailed({
-          key: "submitEmployee",
-          error: error.response.data.result,
-          override: true,
-        }),
-      );
       return error.response;
     }
   };

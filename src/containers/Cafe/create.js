@@ -3,19 +3,38 @@ import { Box, Stack } from "@mui/system";
 import Typography from "@mui/material/Typography";
 import AdminLayout from "../../components/layouts/AdminLayout";
 import { createStructuredSelector } from "reselect";
-import { makeEmployeesList } from "../../store/selector/employeeSelector";
-import { fetchEmployees } from "../../store/actions/employeeAction";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import CafeForm from "../../components/forms/CafeForm";
 import { useNavigate } from "react-router-dom";
+import { reset } from "redux-form";
+import { forms } from "../../utils/constants";
+import { initializeForm } from "../../store/actions";
+import { createCafe } from "../../store/actions/cafeAction";
+import {
+  makeCafeCreateInitialValues,
+  makeCafePayload,
+} from "../../store/selector/cafeSelector";
 
 const CafeCreateHOC = (props) => {
+  const { createCafe, payload, resetForm, initializeForm, initialValues } =
+    props;
   const navigate = useNavigate();
+
+  useEffect(() => {
+    resetForm();
+    initializeForm(initialValues);
+  }, []);
 
   const goBack = () => {
     navigate("/cafes");
+  };
+  const create = async () => {
+    const res = await createCafe(payload);
+    if (res.status === 200) {
+      goBack();
+    }
   };
 
   return (
@@ -33,18 +52,27 @@ const CafeCreateHOC = (props) => {
           </Typography>
         </Stack>
       </Box>
-      <CafeForm clickCancel={() => goBack()} />
+      <CafeForm clickCancel={() => goBack()} onFormSubmit={() => create()} />
     </AdminLayout>
   );
 };
 
 const mapStateToProps = createStructuredSelector({
-  employeesList: makeEmployeesList(),
+  payload: makeCafePayload(),
+  initialValues: makeCafeCreateInitialValues(),
 });
 
 export const mapDispatchToProps = (dispatch) => {
   return {
-    fetchEmployees: (query) => dispatch(fetchEmployees(query)),
+    createCafe: (payload) => dispatch(createCafe(payload)),
+    resetForm: () => dispatch(reset(forms.CAFE_FORM)),
+    initializeForm: (initialValues) =>
+      dispatch(
+        initializeForm({
+          form: forms.CAFE_FORM,
+          data: initialValues,
+        }),
+      ),
   };
 };
 
