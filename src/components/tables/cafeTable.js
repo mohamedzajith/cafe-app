@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -14,7 +14,6 @@ import IconButton from "@mui/material/IconButton";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
 import LastPageIcon from "@mui/icons-material/LastPage";
-import { useNavigate } from "react-router-dom";
 import Button from "../core/Button";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -98,8 +97,7 @@ function TablePaginationActions(props) {
   );
 }
 
-const CafeTable = ({ cafes, path, cafeDelete }) => {
-  const navigate = useNavigate();
+const CafeTable = ({ cafes, cafeEdit, cafeDelete, cafeView }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -114,8 +112,11 @@ const CafeTable = ({ cafes, path, cafeDelete }) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  const redirectTo = (name) => {
-    navigate(`${path}?cafe=${name}`);
+  const editCafe = (cafe) => {
+    cafeEdit && cafeEdit(cafe);
+  };
+  const viewCafe = (cafe) => {
+    cafeView && cafeView(cafe);
   };
   const deleteCafe = (cafe) => {
     cafeDelete && cafeDelete(cafe);
@@ -153,7 +154,7 @@ const CafeTable = ({ cafes, path, cafeDelete }) => {
                   },
                 }}
                 align="center"
-                onClick={() => redirectTo(cafe.name)}
+                onClick={() => viewCafe(cafe)}
               >
                 {cafe.employees}
               </StyledTableCell>
@@ -170,7 +171,7 @@ const CafeTable = ({ cafes, path, cafeDelete }) => {
                     title={"delete"}
                     color={"error"}
                   />
-                  <Button title={"edit"} color={"success"} />
+                  <Button title={"edit"} color={"success"} onClick={() => editCafe(cafe)}/>
                 </Stack>
               </StyledTableCell>
             </StyledTableRow>

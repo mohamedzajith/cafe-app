@@ -9,27 +9,21 @@ import { forms } from "../../utils/constants";
 import Typography from "@mui/material/Typography";
 import {
   fetchEmployeeInfo,
-  fetchEmployees,
-  getEmployee,
-  submitEmployee,
   updateEmployee,
 } from "../../store/actions/employeeAction";
 import {
-  makeEmployeeCreateInitialValues,
   makeEmployeeInfo,
   makeEmployeeInitialValues,
   makeEmployeePayload,
-  makeEmployeesList,
 } from "../../store/selector/employeeSelector";
 import { useNavigate, useParams } from "react-router-dom";
 import AdminLayout from "../../components/layouts/AdminLayout";
 import EmployeeForm from "../../components/forms/EmployeeForm";
-import {
-  makeCafesList,
-  makeCafesOptions,
-} from "../../store/selector/cafeSelector";
+import { makeCafesOptions } from "../../store/selector/cafeSelector";
 import { fetchCafes } from "../../store/actions/cafeAction";
 import { initializeForm } from "../../store/actions";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
 
 const EmployeeEditHOC = (props) => {
   const {
@@ -45,6 +39,7 @@ const EmployeeEditHOC = (props) => {
   } = props;
   const navigate = useNavigate();
   const { id } = useParams();
+  const MySwal = withReactContent(Swal);
 
   const goBack = () => {
     navigate("/employees");
@@ -55,6 +50,12 @@ const EmployeeEditHOC = (props) => {
     if (res.status === 200) {
       resetForm();
       goBack();
+    } else {
+      MySwal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: res?.data?.result?.error[0]?.message
+      })
     }
   };
 

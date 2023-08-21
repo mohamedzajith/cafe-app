@@ -7,13 +7,13 @@ import { memo, useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import {deleteCafe, fetchCafes} from "../../store/actions/cafeAction";
+import { deleteCafe, fetchCafes } from "../../store/actions/cafeAction";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { makeCafesList } from "../../store/selector/cafeSelector";
 import CafeTable from "../../components/tables/cafeTable";
 import Button from "../../components/core/Button";
 import AdminLayout from "../../components/layouts/AdminLayout";
-import {deleteEmployee} from "../../store/actions/employeeAction";
+import { deleteEmployee } from "../../store/actions/employeeAction";
 
 const CafeHOC = (props) => {
   const { fetchCafes, cafesList, deleteCafe } = props;
@@ -43,7 +43,12 @@ const CafeHOC = (props) => {
       }
     });
   };
-
+  const redirectTo = (cafeInfo) => {
+    navigate(`/cafe/${cafeInfo.id}`);
+  };
+  const redirectViewTo = (cafeInfo) => {
+    navigate(`/employees?cafe=${cafeInfo.name}`);
+  };
   return (
     <AdminLayout>
       <Box>
@@ -64,8 +69,9 @@ const CafeHOC = (props) => {
         </Stack>
         <CafeTable
           cafes={cafesList}
-          path={"/employees"}
+          cafeEdit={redirectTo}
           cafeDelete={isCafeDelete}
+          cafeView={redirectViewTo}
         />
       </Box>
     </AdminLayout>

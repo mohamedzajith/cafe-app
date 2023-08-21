@@ -3,6 +3,7 @@ import { isEmpty, get, map } from "lodash";
 import {
   employeeCreateInitialValuesSelector,
   employeeFormSelector,
+  employeeInfoSelector,
   employeeInitialValuesSelector,
 } from "./employeeSelector";
 import { forms } from "../../utils/constants";
@@ -10,12 +11,19 @@ import dayjs from "dayjs";
 
 const cafeResultDomain = (state) => get(state, "api.cafes.data", {});
 
+const cafeInfoDomain = (state) => get(state, "api.cafeInfo.data", {});
+
 export const cafesResultSelector = createSelector(
   cafeResultDomain,
   (cafesResults) => {
     return isEmpty(cafesResults) ? [] : cafesResults;
   },
 );
+
+export const cafeInfoSelector = createSelector(cafeInfoDomain, (cafeInfo) => {
+  return isEmpty(cafeInfo) ? {} : cafeInfo;
+});
+
 export const cafesOptionsSelector = createSelector(
   cafesResultSelector,
   (cafesResults) => {
@@ -24,6 +32,11 @@ export const cafesOptionsSelector = createSelector(
     });
     return [{ value: "", label: "None" }, ...results];
   },
+);
+
+export const cafeInitialValuesSelector = createSelector(
+  cafeInfoSelector,
+  (cafeInfo) => cafeInfo,
 );
 
 const cafeFormDomain = (state) =>
@@ -59,7 +72,9 @@ export const makeCafesList = () => cafesResultSelector;
 
 export const makeCafePayload = () => cafeFormSelector;
 
-// export const makeCafeInitialValues = () => cafeInitialValuesSelector;
+export const makeCafeInitialValues = () => cafeInitialValuesSelector;
 
 export const makeCafeCreateInitialValues = () =>
   cafeCreateInitialValuesSelector;
+
+export const makeCafeInfo = () => cafeInfoSelector;
