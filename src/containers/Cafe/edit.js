@@ -30,7 +30,7 @@ const CafeEditHOC = (props) => {
     initializeForm,
     initialValues,
     cafeInfo,
-    updateCafe
+    updateCafe,
   } = props;
   const navigate = useNavigate();
   const { id } = useParams();
@@ -48,7 +48,7 @@ const CafeEditHOC = (props) => {
     navigate("/cafes");
   };
   const create = async () => {
-    const res = await updateCafe(id,payload);
+    const res = await updateCafe(id, payload);
     if (res.status === 200) {
       goBack();
     }

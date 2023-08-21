@@ -1,10 +1,48 @@
 import React from "react";
-import { reduxForm } from "redux-form";
+import {getFormSyncErrors, reduxForm} from "redux-form";
 import Button from "@mui/material/Button";
 import { forms } from "../../utils/constants";
 import TextField from "../formFields/TextFeild";
 import { Box, Stack } from "@mui/system";
+import validate from "../../utils/validate";
+import {connect} from "react-redux";
+import {compose} from "redux";
 
+const validations = [
+  {
+    field: "location",
+    message: "cannot be blank",
+    type: "presence",
+  },
+  {
+    field: "name",
+    message: "cannot be blank",
+    type: "presence",
+  },
+  {
+    field: "name",
+    message: "Maximum length 10 digits",
+    max_length: 10,
+    type: "maxLength",
+  },
+  {
+    field: "name",
+    message: "Minimum length 6 digits",
+    min_length: 6,
+    type: "minLength",
+  },
+  {
+    field: "description",
+    message: "cannot be blank",
+    type: "presence",
+  },
+  {
+    field: "description",
+    message: "Maximum length 256 digits",
+    max_length: 256,
+    type: "maxLength",
+  },
+]
 const CafeForm = (props) => {
   const { handleSubmit, reset, submitting, clickCancel, onFormSubmit } = props;
 
@@ -72,7 +110,20 @@ const CafeForm = (props) => {
   );
 };
 
-export default reduxForm({
-  form: forms.CAFE_FORM,
-  destroyOnUnmount: false,
-})(CafeForm);
+
+const mapStateToProps = state => ({
+  validations: validations,
+  syncErrors: getFormSyncErrors(forms.CAFE_FORM)(state),
+})
+
+const mapDispatchToProps = dispatch => ({
+})
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  reduxForm({
+    form: forms.CAFE_FORM,
+    destroyOnUnmount: false,
+    validate
+  })
+)(CafeForm)

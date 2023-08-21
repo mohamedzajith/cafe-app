@@ -171,7 +171,11 @@ const CafeTable = ({ cafes, cafeEdit, cafeDelete, cafeView }) => {
                     title={"delete"}
                     color={"error"}
                   />
-                  <Button title={"edit"} color={"success"} onClick={() => editCafe(cafe)}/>
+                  <Button
+                    title={"edit"}
+                    color={"success"}
+                    onClick={() => editCafe(cafe)}
+                  />
                 </Stack>
               </StyledTableCell>
             </StyledTableRow>

@@ -52,10 +52,10 @@ const EmployeeEditHOC = (props) => {
       goBack();
     } else {
       MySwal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: res?.data?.result?.error[0]?.message
-      })
+        icon: "error",
+        title: "Oops...",
+        text: res?.data?.result?.error[0]?.message,
+      });
     }
   };
 
